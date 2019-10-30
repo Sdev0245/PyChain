@@ -1,11 +1,12 @@
 from blockchain import Blockchain
 from uuid import uuid4
 from utility.verification import Verification
+from wallet import Wallet
 verifier = Verification()
 class Node:
 	def __init__(self):
-		self.id ='Deven'
-		self.blockchain =Blockchain(self.id)
+		self.wallet =Wallet()
+		self.blockchain =Blockchain(self.wallet.public_Key)
 	def get_transaction_value(self):
 
 		tx_recipient = input('Enter the recipient of the transaction: ')
@@ -36,6 +37,8 @@ class Node:
 			print('2: Mine a new block')
 			print('3: Output the blockchain blocks')
 			print('4: Check transaction validity')
+			print('5 .To generate the keys')
+			print('6. To load the keys')
 			print('q: Quit')
 			user_choice = self.get_user_choice()
 			if user_choice == '1':
@@ -52,13 +55,16 @@ class Node:
 					
 			elif user_choice == '3':
 				self.print_blockchain_elements()
-				print('Balance of {}: {:6.2f}'.format(self.id, self.blockchain.get_balance()))
+				print('Balance of {}: {:6.2f}'.format(self.wallet.public_Key, self.blockchain.get_balance()))
 
 			elif user_choice == '4':
 				if verifier.verify_transactions(self.blockchain.open_transactions,self.blockchain.get_balance):
 					print('All transactions are valid')
 				else:
 					print('There are invalid transactions')
+			elif user_choice == '5':
+				 
+				self.wallet.create_keys()
 			elif user_choice == 'q':
 			 
 				waiting_for_input = False
@@ -73,6 +79,6 @@ class Node:
 
 
 	
-
-node =Node()
-node.get_data()
+if __name__ == '__main__':
+	node =Node()
+	node.get_data()
